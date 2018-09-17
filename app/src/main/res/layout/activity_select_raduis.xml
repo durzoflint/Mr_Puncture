@@ -3,20 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SelectVehicalType">
+    tools:context=".SelectRaduisActivity">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/four"
+        android:layout_above="@+id/two"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="80dp"
-        android:text="Select Vehical Type"
+        android:layout_marginBottom="40dp"
+        android:text="Select Radius"
         android:textColor="@android:color/white"
         android:textSize="18sp" />
 
     <Button
-        android:id="@+id/four"
+        android:id="@+id/two"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_above="@+id/three"
@@ -26,10 +26,23 @@
         android:background="@color/colorSecondary"
         android:gravity="center_vertical|start"
         android:padding="8dp"
-        android:text="Four Wheeler" />
+        android:text="2 km" />
 
     <Button
         android:id="@+id/three"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/four"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="2dp"
+        android:background="@color/colorSecondary"
+        android:gravity="center_vertical|start"
+        android:padding="8dp"
+        android:text="3 km" />
+
+    <Button
+        android:id="@+id/four"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -38,18 +51,31 @@
         android:background="@color/colorSecondary"
         android:gravity="center_vertical|start"
         android:padding="8dp"
-        android:text="Three Wheeler" />
+        android:text="4 km" />
 
     <Button
-        android:id="@+id/two"
+        android:id="@+id/five"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/three"
+        android:layout_below="@+id/four"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="2dp"
         android:layout_marginTop="2dp"
         android:background="@color/colorSecondary"
         android:gravity="center_vertical|start"
         android:padding="8dp"
-        android:text="Two Wheeler" />
+        android:text="5 km" />
+
+    <Button
+        android:id="@+id/ten"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/five"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="2dp"
+        android:background="@color/colorSecondary"
+        android:gravity="center_vertical|start"
+        android:padding="8dp"
+        android:text="10 km" />
 </RelativeLayout>
