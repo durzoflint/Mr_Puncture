@@ -1,21 +1,13 @@
 package durzoflint.mrpuncture;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Toast;
-
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
+import android.widget.LinearLayout;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -29,32 +21,36 @@ import durzoflint.mrpuncture.Adapters.RecyclerViewItemClickListener;
 import durzoflint.mrpuncture.Adapters.Recycler_View_Adapter;
 import durzoflint.mrpuncture.Adapters.Store;
 
-import static durzoflint.mrpuncture.HomeActivity.VEHICAL_TYPE;
+import static durzoflint.mrpuncture.HomeActivity.LATI;
+import static durzoflint.mrpuncture.HomeActivity.LONGI;
 import static durzoflint.mrpuncture.SelectRaduisActivity.SEARCH_RADIUS;
+import static durzoflint.mrpuncture.SelectVehicalTypeActivity.VEHICAL_TYPE;
 
 public class SelectServiceActivity extends AppCompatActivity {
 
-    String vehicalType, searchRadius;
+    String vehicalType, searchRadius, lati, longi;
     List<Store> stores;
-    private FusedLocationProviderClient fusedLocationProviderClient;
-    private int REQUEST_LOCATION = 1;
+    LinearLayout progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_service);
 
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-
         Intent intent = getIntent();
-
+        lati = intent.getStringExtra(LATI);
+        longi = intent.getStringExtra(LONGI);
         vehicalType = intent.getIntExtra(VEHICAL_TYPE, 0) + "";
         searchRadius = intent.getIntExtra(SEARCH_RADIUS, 0) + "";
 
-        enableUserLocation();
+        progress = findViewById(R.id.progress_layout);
+        progress.setVisibility(View.VISIBLE);
+
+        new FetchServices().execute("test@user.com", vehicalType, searchRadius, lati, longi);
     }
 
     private void setupRecyclerView(List<Store> stores) {
+        progress.setVisibility(View.GONE);
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -69,38 +65,6 @@ public class SelectServiceActivity extends AppCompatActivity {
             }
         }));
     }
-
-    private void enableUserLocation() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
-        } else {
-
-            fusedLocationProviderClient.getLastLocation()
-                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                        @Override
-                        public void onSuccess(Location location) {
-                            if (location != null) {
-                                new FetchServices().execute("test@user.com", vehicalType, searchRadius,
-                                        location.getLatitude() + "", location.getLongitude() + "");
-                            } else {
-                                Toast.makeText(SelectServiceActivity.this, "Location Cannot be Found", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-
-        if (requestCode == REQUEST_LOCATION) {
-            if (grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                enableUserLocation();
-            }
-        }
-    }
-
     class FetchServices extends AsyncTask<String, Void, Void> {
         String baseUrl = "http://www.mrpuncture.com/app/";
         String webPage = "";
