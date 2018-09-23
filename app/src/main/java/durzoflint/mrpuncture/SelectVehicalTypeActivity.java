@@ -6,14 +6,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
-public class SelectVehicalType extends AppCompatActivity implements View.OnClickListener {
+public class SelectVehicalTypeActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static final String VEHICAL_TYPE = "vehical_type";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_select_vehical_type);
 
         Button four = findViewById(R.id.four);
         Button three = findViewById(R.id.three);

@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
-import static durzoflint.mrpuncture.SelectVehicalType.VEHICAL_TYPE;
+import static durzoflint.mrpuncture.HomeActivity.VEHICAL_TYPE;
 
 public class SelectRaduisActivity extends AppCompatActivity implements View.OnClickListener {
 

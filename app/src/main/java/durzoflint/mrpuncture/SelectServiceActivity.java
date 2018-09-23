@@ -29,8 +29,8 @@ import durzoflint.mrpuncture.Adapters.RecyclerViewItemClickListener;
 import durzoflint.mrpuncture.Adapters.Recycler_View_Adapter;
 import durzoflint.mrpuncture.Adapters.Store;
 
+import static durzoflint.mrpuncture.HomeActivity.VEHICAL_TYPE;
 import static durzoflint.mrpuncture.SelectRaduisActivity.SEARCH_RADIUS;
-import static durzoflint.mrpuncture.SelectVehicalType.VEHICAL_TYPE;
 
 public class SelectServiceActivity extends AppCompatActivity {
 
