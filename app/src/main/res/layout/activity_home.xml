@@ -27,5 +27,5 @@
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginBottom="16dp"
         android:background="@color/colorSecondary"
-        android:text="Next" />
+        android:text="Select Location" />
 </FrameLayout>

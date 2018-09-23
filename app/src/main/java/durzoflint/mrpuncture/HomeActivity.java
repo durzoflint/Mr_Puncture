@@ -17,7 +17,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
 
@@ -46,6 +45,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         useThis.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                target = mMap.getCameraPosition().target;
                 Intent intent = new Intent(HomeActivity.this, SelectVehicalTypeActivity.class);
                 intent.putExtra(LATI, target.latitude + "");
                 intent.putExtra(LONGI, target.longitude + "");
@@ -57,14 +57,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
-            @Override
-            public void onCameraMove() {
-                CameraPosition cameraPosition = mMap.getCameraPosition();
-                target = cameraPosition.target;
-            }
-        });
-
         enableUserLocation();
     }
 
