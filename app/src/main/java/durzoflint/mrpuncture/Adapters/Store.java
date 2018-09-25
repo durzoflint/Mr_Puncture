@@ -1,9 +1,10 @@
 package durzoflint.mrpuncture.Adapters;
 
 public class Store {
-    String name, distance, badge;
+    public String id, name, distance, badge;
 
-    public Store(String name, String distance, String badge) {
+    public Store(String id, String name, String distance, String badge) {
+        this.id = id;
         this.name = name;
         this.distance = distance;
         this.badge = badge;

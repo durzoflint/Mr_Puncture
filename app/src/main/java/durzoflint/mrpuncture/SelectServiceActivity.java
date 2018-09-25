@@ -28,6 +28,7 @@ import static durzoflint.mrpuncture.SelectVehicalTypeActivity.VEHICAL_TYPE;
 
 public class SelectServiceActivity extends AppCompatActivity {
 
+    public static final String SHOP = "SHOP";
     String vehicalType, searchRadius, lati, longi;
     List<Store> stores;
     LinearLayout progress;
@@ -49,7 +50,7 @@ public class SelectServiceActivity extends AppCompatActivity {
         new FetchServices().execute("test@user.com", vehicalType, searchRadius, lati, longi);
     }
 
-    private void setupRecyclerView(List<Store> stores) {
+    private void setupRecyclerView(final List<Store> stores) {
         progress.setVisibility(View.GONE);
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         recyclerView.setNestedScrollingEnabled(false);
@@ -57,7 +58,15 @@ public class SelectServiceActivity extends AppCompatActivity {
         recyclerView.setAdapter(new Recycler_View_Adapter(stores, this, new RecyclerViewItemClickListener() {
             @Override
             public void onClick(View view, int position) {
-                int id = view.getId();
+                ArrayList<String> shop = new ArrayList<>();
+                shop.add(stores.get(position).id);
+                shop.add(stores.get(position).name);
+                shop.add(stores.get(position).distance);
+                shop.add(stores.get(position).badge);
+
+                Intent intent = new Intent(SelectServiceActivity.this, ShopActivity.class);
+                intent.putExtra(SHOP, shop);
+                startActivity(intent);
             }
 
             @Override
@@ -65,6 +74,7 @@ public class SelectServiceActivity extends AppCompatActivity {
             }
         }));
     }
+
     class FetchServices extends AsyncTask<String, Void, Void> {
         String baseUrl = "http://www.mrpuncture.com/app/";
         String webPage = "";
@@ -106,8 +116,17 @@ public class SelectServiceActivity extends AppCompatActivity {
 
             String response[] = webPage.split("<br>");
             stores = new ArrayList<>();
-            for (int i = 0, k = 0; k < response.length / 3; i += 3, k++)
-                stores.add(new Store(response[i], response[i + 1], response[i + 2]));
+            for (int i = 0, k = 0; k < response.length / 4; i += 4, k++) {
+                double distance = Double.parseDouble(response[i + 2]);
+                String text;
+                if (distance < 1 && distance > 0.005)
+                    text = Math.round(distance * 1000) + " meters away";
+                else if (distance < 0.005)
+                    text = "Less than 5 meters away";
+                else
+                    text = Math.round(distance) + " km away";
+                stores.add(new Store(response[i], response[i + 1], text, response[i + 3]));
+            }
             setupRecyclerView(stores);
         }
     }

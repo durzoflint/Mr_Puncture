@@ -28,7 +28,9 @@
         </activity>
         <activity android:name=".SelectRaduisActivity" />
         <activity android:name=".SelectServiceActivity" />
-        <activity android:name=".SelectVehicalTypeActivity"></activity>
+        <activity android:name=".SelectVehicalTypeActivity" />
+        <activity android:name=".ShopActivity" />
+        <activity android:name=".StatusActivity"></activity>
     </application>
 
 </manifest>
