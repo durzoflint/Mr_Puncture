@@ -63,6 +63,7 @@ public class SelectServiceActivity extends AppCompatActivity {
                 shop.add(stores.get(position).name);
                 shop.add(stores.get(position).distance);
                 shop.add(stores.get(position).badge);
+                shop.add(stores.get(position).number);
 
                 Intent intent = new Intent(SelectServiceActivity.this, ShopActivity.class);
                 intent.putExtra(SHOP, shop);
@@ -116,7 +117,7 @@ public class SelectServiceActivity extends AppCompatActivity {
 
             String response[] = webPage.split("<br>");
             stores = new ArrayList<>();
-            for (int i = 0, k = 0; k < response.length / 4; i += 4, k++) {
+            for (int i = 0, k = 0; k < response.length / 5; i += 5, k++) {
                 double distance = Double.parseDouble(response[i + 2]);
                 String text;
                 if (distance < 1 && distance > 0.005)
@@ -125,7 +126,7 @@ public class SelectServiceActivity extends AppCompatActivity {
                     text = "Less than 5 meters away";
                 else
                     text = Math.round(distance) + " km away";
-                stores.add(new Store(response[i], response[i + 1], text, response[i + 3]));
+                stores.add(new Store(response[i], response[i + 1], text, response[i + 3], response[i + 4]));
             }
             setupRecyclerView(stores);
         }
