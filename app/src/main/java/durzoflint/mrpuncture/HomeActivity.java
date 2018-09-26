@@ -34,6 +34,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
+
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -85,8 +88,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                         LatLng user = new LatLng(location.getLatitude(), location.getLongitude());
 
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(user, 16f));
-
-                        //Todo: Use this location
                     } else {
                         /*LatLng fipola = new LatLng(13.092498, 80.2179698);
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(fipola, 16f));*/

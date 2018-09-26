@@ -24,7 +24,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onNewToken(String s) {
         super.onNewToken(s);
 
-        Log.d("Abhinav2", "Refreshed token: " + s);//Todo: The index needs to be in shared prefs which is unique for every user. Refer the sql table
+        Log.d("Abhinav2", "Refreshed token: " + s);//
+        // Todo: The index needs to be in shared prefs which is unique for every user. Refer the sql table
         sendTokenToServer(s, USERS, 1 + "");
     }
 
