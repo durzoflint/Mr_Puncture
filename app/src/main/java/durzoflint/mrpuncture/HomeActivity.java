@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -22,8 +23,17 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import durzoflint.mrpuncture.firebase.MyFirebaseMessagingService;
+
 import static durzoflint.mrpuncture.LoginActivity.LOGIN_PREFS;
 import static durzoflint.mrpuncture.LoginActivity.USER_ID;
+import static durzoflint.mrpuncture.firebase.MyFirebaseMessagingService.TOKEN;
 
 public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback {
     public static final String LONGI = "longi";
@@ -40,9 +50,16 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.activity_home);
 
         SharedPreferences sharedPreferences = getSharedPreferences(LOGIN_PREFS, Context.MODE_PRIVATE);
-        if (sharedPreferences.getString(USER_ID, "").isEmpty()) {
+        String id = sharedPreferences.getString(USER_ID, "");
+        if (id.isEmpty()) {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
+        } else {
+            SharedPreferences firebasePreferences = getSharedPreferences(LOGIN_PREFS, Context.MODE_PRIVATE);
+            String token = firebasePreferences.getString(TOKEN, "");
+            if (!token.isEmpty()) {
+                new SendTokenToServer().execute(token, id);
+            }
         }
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
@@ -63,6 +80,40 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 startActivity(intent);
             }
         });
+    }
+
+    class SendTokenToServer extends AsyncTask<String, Void, Void> {
+        @Override
+        protected Void doInBackground(String... strings) {
+            String baseUrl = "http://www.mrpuncture.com/app/";
+            String webPage = "";
+            URL url;
+            HttpURLConnection urlConnection = null;
+            try {
+                String myURL = baseUrl + "addfirebaseid.php?i=" + strings[1] + "&t=" + MyFirebaseMessagingService.USERS + "&s=" + strings[0];
+                myURL = myURL.replaceAll(" ", "%20");
+                myURL = myURL.replaceAll("\'", "%27");
+                myURL = myURL.replaceAll("\'", "%22");
+                myURL = myURL.replaceAll("\\(", "%28");
+                myURL = myURL.replaceAll("\\)", "%29");
+                myURL = myURL.replaceAll("\\{", "%7B");
+                myURL = myURL.replaceAll("\\}", "%7B");
+                myURL = myURL.replaceAll("\\]", "%22");
+                myURL = myURL.replaceAll("\\[", "%22");
+                url = new URL(myURL);
+                urlConnection = (HttpURLConnection) url.openConnection();
+                BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                String data;
+                while ((data = br.readLine()) != null)
+                    webPage = webPage + data;
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null)
+                    urlConnection.disconnect();
+            }
+            return null;
+        }
     }
 
     @Override
