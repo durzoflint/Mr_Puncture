@@ -1,7 +1,9 @@
 package durzoflint.mrpuncture;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -20,6 +22,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import static durzoflint.mrpuncture.LoginActivity.LOGIN_PREFS;
+import static durzoflint.mrpuncture.LoginActivity.USER_ID;
+
 public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback {
     public static final String LONGI = "longi";
     public static final String LATI = "lati";
@@ -34,8 +39,11 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        startActivity(new Intent(this, LoginActivity.class));
-        finish();
+        SharedPreferences sharedPreferences = getSharedPreferences(LOGIN_PREFS, Context.MODE_PRIVATE);
+        if (sharedPreferences.getString(USER_ID, "").isEmpty()) {
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+        }
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 

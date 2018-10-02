@@ -54,19 +54,19 @@ public class SelectRaduisActivity extends AppCompatActivity implements View.OnCl
                 startActivity(intent);
                 break;
             case R.id.three:
-                intent.putExtra(SEARCH_RADIUS, 2);
+                intent.putExtra(SEARCH_RADIUS, 3);
                 startActivity(intent);
                 break;
             case R.id.four:
-                intent.putExtra(SEARCH_RADIUS, 2);
+                intent.putExtra(SEARCH_RADIUS, 4);
                 startActivity(intent);
                 break;
             case R.id.five:
-                intent.putExtra(SEARCH_RADIUS, 2);
+                intent.putExtra(SEARCH_RADIUS, 5);
                 startActivity(intent);
                 break;
             case R.id.ten:
-                intent.putExtra(SEARCH_RADIUS, 2);
+                intent.putExtra(SEARCH_RADIUS, 10);
                 startActivity(intent);
                 break;
         }
