@@ -1,6 +1,8 @@
 package durzoflint.mrpuncture;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +25,8 @@ import durzoflint.mrpuncture.Adapters.Store;
 
 import static durzoflint.mrpuncture.HomeActivity.LATI;
 import static durzoflint.mrpuncture.HomeActivity.LONGI;
+import static durzoflint.mrpuncture.LoginActivity.LOGIN_PREFS;
+import static durzoflint.mrpuncture.LoginActivity.USER_ID;
 import static durzoflint.mrpuncture.SelectRaduisActivity.SEARCH_RADIUS;
 import static durzoflint.mrpuncture.SelectVehicalTypeActivity.VEHICAL_TYPE;
 
@@ -47,7 +51,8 @@ public class SelectServiceActivity extends AppCompatActivity {
         progress = findViewById(R.id.progress_layout);
         progress.setVisibility(View.VISIBLE);
 
-        new FetchServices().execute("test@user.com", vehicalType, searchRadius, lati, longi);
+        SharedPreferences sharedPreferences = getSharedPreferences(LOGIN_PREFS, Context.MODE_PRIVATE);
+        new FetchServices().execute(sharedPreferences.getString(USER_ID, ""), vehicalType, searchRadius, lati, longi);
     }
 
     private void setupRecyclerView(final List<Store> stores) {
@@ -85,7 +90,7 @@ public class SelectServiceActivity extends AppCompatActivity {
             URL url;
             HttpURLConnection urlConnection = null;
             try {
-                String myURL = baseUrl + "fetchshops.php?e=" + strings[0] + "&v=" + strings[1]
+                String myURL = baseUrl + "fetchshops.php?i=" + strings[0] + "&v=" + strings[1]
                         + "&r=" + strings[2] + "&l1=" + strings[3] + "&l2=" + strings[4];
                 myURL = myURL.replaceAll(" ", "%20");
                 myURL = myURL.replaceAll("\'", "%27");
