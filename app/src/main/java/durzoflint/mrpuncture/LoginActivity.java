@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -32,8 +33,17 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 EditText email = findViewById(R.id.email);
+                EditText password = findViewById(R.id.password);
 
-                new Login().execute(email.getText().toString());
+                new Login().execute(email.getText().toString(), password.getText().toString());
+            }
+        });
+
+        TextView newUser = findViewById(R.id.new_user);
+        newUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
             }
         });
     }
@@ -47,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
             URL url;
             HttpURLConnection urlConnection = null;
             try {
-                String myURL = baseUrl + "login.php?e=" + strings[0];
+                String myURL = baseUrl + "login.php?e=" + strings[0] + "&p=" + strings[1];
                 myURL = myURL.replaceAll(" ", "%20");
                 myURL = myURL.replaceAll("\'", "%27");
                 myURL = myURL.replaceAll("\'", "%22");

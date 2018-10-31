@@ -20,7 +20,7 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_regisrer);
+        setContentView(R.layout.activity_register);
 
         Button submit = findViewById(R.id.submit);
         submit.setOnClickListener(new View.OnClickListener() {
@@ -28,8 +28,11 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View view) {
                 EditText name = findViewById(R.id.name);
                 EditText email = findViewById(R.id.email);
+                EditText phone = findViewById(R.id.phone);
+                EditText password = findViewById(R.id.password);
 
-                new Login().execute(name.getText().toString(), email.getText().toString());
+                new Login().execute(name.getText().toString(), email.getText().toString(),
+                        phone.getText().toString(), password.getText().toString());
             }
         });
     }
@@ -43,7 +46,8 @@ public class RegisterActivity extends AppCompatActivity {
             URL url;
             HttpURLConnection urlConnection = null;
             try {
-                String myURL = baseUrl + "adduser.php?name=" + strings[0] + "&email=" + strings[1];
+                String myURL = baseUrl + "adduser.php?name=" + strings[0] + "&email=" +
+                        strings[1] + "&phone=" + strings[2] + "&pass=" + strings[3];
                 myURL = myURL.replaceAll(" ", "%20");
                 myURL = myURL.replaceAll("\'", "%27");
                 myURL = myURL.replaceAll("\'", "%22");
