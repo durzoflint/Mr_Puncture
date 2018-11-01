@@ -31,13 +31,13 @@ public class RegisterActivity extends AppCompatActivity {
                 EditText phone = findViewById(R.id.phone);
                 EditText password = findViewById(R.id.password);
 
-                new Login().execute(name.getText().toString(), email.getText().toString(),
+                new Register().execute(name.getText().toString(), email.getText().toString(),
                         phone.getText().toString(), password.getText().toString());
             }
         });
     }
 
-    class Login extends AsyncTask<String, Void, Void> {
+    class Register extends AsyncTask<String, Void, Void> {
         String baseUrl = "http://www.mrpuncture.com/app/";
         String webPage = "";
 
@@ -51,6 +51,7 @@ public class RegisterActivity extends AppCompatActivity {
                 myURL = myURL.replaceAll(" ", "%20");
                 myURL = myURL.replaceAll("\'", "%27");
                 myURL = myURL.replaceAll("\'", "%22");
+                myURL = myURL.replaceAll("\\+", "%2B");
                 myURL = myURL.replaceAll("\\(", "%28");
                 myURL = myURL.replaceAll("\\)", "%29");
                 myURL = myURL.replaceAll("\\{", "%7B");

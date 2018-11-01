@@ -35,7 +35,8 @@ public class LoginActivity extends AppCompatActivity {
                 EditText email = findViewById(R.id.email);
                 EditText password = findViewById(R.id.password);
 
-                new Login().execute(email.getText().toString(), password.getText().toString());
+                new Login().execute(email.getText().toString(), password.getText().toString(),
+                        "users");
             }
         });
 
@@ -57,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
             URL url;
             HttpURLConnection urlConnection = null;
             try {
-                String myURL = baseUrl + "login.php?e=" + strings[0] + "&p=" + strings[1];
+                String myURL = baseUrl + "login.php?e=" + strings[0] + "&p=" + strings[1] + "&t=" + strings[2];
                 myURL = myURL.replaceAll(" ", "%20");
                 myURL = myURL.replaceAll("\'", "%27");
                 myURL = myURL.replaceAll("\'", "%22");
