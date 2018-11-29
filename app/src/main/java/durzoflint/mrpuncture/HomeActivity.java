@@ -61,8 +61,11 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             String token = firebasePreferences.getString(TOKEN, "");
             if (!token.isEmpty()) {
                 new SendTokenToServer().execute(token, id);
+                firebasePreferences.edit().putString(TOKEN, "").apply();
             }
         }
+
+        //Todo: Check for existing orders(on server). If yes, then retain them.
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 

@@ -26,10 +26,8 @@ import static durzoflint.mrpuncture.SelectServiceActivity.SHOP;
 public class ShopActivity extends AppCompatActivity {
 
     public static final String SHOPS = "shops";
-    public static final String NUMBER = "number";
-    public static final String NAME = "name";
     private ArrayList<String> shop;
-    private String id, name, number;
+    private String id, name;
     private ProgressDialog progressDialog;
 
     @Override
@@ -47,7 +45,6 @@ public class ShopActivity extends AppCompatActivity {
 
         id = shop.get(0);
         name = shop.get(1);
-        number = shop.get(4);
 
         nameT.setText(name);
         distance.setText(shop.get(2));
@@ -71,6 +68,7 @@ public class ShopActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 new Notify().execute(id, SHOPS, "New Request", "A user needs a puncture fixed");
+
                 SharedPreferences sharedPreferences = getSharedPreferences(LOGIN_PREFS, Context
                         .MODE_PRIVATE);
                 String id = sharedPreferences.getString(USER_ID, "");
@@ -132,6 +130,11 @@ public class ShopActivity extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             progressDialog.dismiss();
+
+            Intent intent = getBaseContext().getPackageManager().getLaunchIntentForPackage
+                    (getBaseContext().getPackageName());
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
         }
     }
 
@@ -168,15 +171,6 @@ public class ShopActivity extends AppCompatActivity {
                     urlConnection.disconnect();
             }
             return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            Intent intent = new Intent(ShopActivity.this, StatusActivity.class);
-            intent.putExtra(NAME, name);
-            intent.putExtra(NUMBER, number);
-            startActivity(intent);
         }
     }
 }

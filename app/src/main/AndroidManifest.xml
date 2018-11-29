@@ -30,7 +30,6 @@
         <activity android:name=".SelectServiceActivity" />
         <activity android:name=".SelectVehicalTypeActivity" />
         <activity android:name=".ShopActivity" />
-        <activity android:name=".StatusActivity" />
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
@@ -44,7 +43,6 @@
 
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".PreviousServicesActivity"></activity>
     </application>
 
 </manifest>
