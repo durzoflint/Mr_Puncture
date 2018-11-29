@@ -1,55 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_width="match_parent"
     tools:context=".SelectVehicalTypeActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/four"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="80dp"
-        android:text="Select Vehical Type"
-        android:textColor="@android:color/white"
-        android:textSize="18sp" />
+    <include
+        layout="@layout/background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
-    <Button
-        android:id="@+id/four"
-        android:layout_width="160dp"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/three"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="2dp"
-        android:layout_marginTop="2dp"
-        android:background="@color/colorSecondary"
-        android:gravity="center_vertical|start"
-        android:padding="8dp"
-        android:text="Four Wheeler" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/three"
-        android:layout_width="160dp"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="2dp"
-        android:layout_marginTop="2dp"
-        android:background="@color/colorSecondary"
-        android:gravity="center_vertical|start"
-        android:padding="8dp"
-        android:text="Three Wheeler" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/four"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="80dp"
+            android:text="Select Vehical Type"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
 
-    <Button
-        android:id="@+id/two"
-        android:layout_width="160dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/three"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="2dp"
-        android:layout_marginTop="2dp"
-        android:background="@color/colorSecondary"
-        android:gravity="center_vertical|start"
-        android:padding="8dp"
-        android:text="Two Wheeler" />
-</RelativeLayout>
+        <Button
+            android:id="@+id/four"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/three"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:background="@color/colorSecondary"
+            android:gravity="center_vertical|start"
+            android:padding="8dp"
+            android:text="Four Wheeler" />
+
+        <Button
+            android:id="@+id/three"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:background="@color/colorSecondary"
+            android:gravity="center_vertical|start"
+            android:padding="8dp"
+            android:text="Three Wheeler" />
+
+        <Button
+            android:id="@+id/two"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/three"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:background="@color/colorSecondary"
+            android:gravity="center_vertical|start"
+            android:padding="8dp"
+            android:text="Two Wheeler" />
+    </RelativeLayout>
+</FrameLayout>
