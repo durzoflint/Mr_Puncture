@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -121,6 +122,13 @@ public class SelectServiceActivity extends AppCompatActivity {
             super.onPostExecute(aVoid);
 
             String response[] = webPage.split("<br>");
+
+            if (response.length == 0 || response[0].equals("")) {
+                Toast.makeText(SelectServiceActivity.this, "No Shops Found Nearby", Toast
+                        .LENGTH_SHORT).show();
+                finish();
+            }
+
             stores = new ArrayList<>();
             for (int i = 0, k = 0; k < response.length / 5; i += 5, k++) {
                 double distance = Double.parseDouble(response[i + 2]);
