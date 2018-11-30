@@ -68,11 +68,6 @@ public class ShopActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 new Notify().execute(id, SHOPS, "New Request", "A user needs a puncture fixed");
-
-                SharedPreferences sharedPreferences = getSharedPreferences(LOGIN_PREFS, Context
-                        .MODE_PRIVATE);
-                String id = sharedPreferences.getString(USER_ID, "");
-                new PlaceOrder().execute(id);
             }
         });
     }
@@ -171,6 +166,15 @@ public class ShopActivity extends AppCompatActivity {
                     urlConnection.disconnect();
             }
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            SharedPreferences sharedPreferences = getSharedPreferences(LOGIN_PREFS, Context
+                    .MODE_PRIVATE);
+            String id = sharedPreferences.getString(USER_ID, "");
+            new PlaceOrder().execute(id);
         }
     }
 }
