@@ -25,6 +25,7 @@ public class OnGoingOrderActivity extends AppCompatActivity {
     public static final int CALL_REQUEST_CODE = 1;
     String phone;
     String orderid;
+    String shopid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +36,7 @@ public class OnGoingOrderActivity extends AppCompatActivity {
         orderid = intent.getStringExtra(HomeActivity.ORDER_ID);
         String status = intent.getStringExtra(HomeActivity.STATUS);
         String userid = intent.getStringExtra(HomeActivity.USER_ID);
-        String shopid = intent.getStringExtra(HomeActivity.SHOP_ID);
+        shopid = intent.getStringExtra(HomeActivity.SHOP_ID);
         String name = intent.getStringExtra(HomeActivity.NAME);
         phone = intent.getStringExtra(HomeActivity.PHONE);
         String email = intent.getStringExtra(HomeActivity.EMAIL);
@@ -99,6 +100,16 @@ public class OnGoingOrderActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[]
+            grantResults) {
+        if (requestCode == CALL_REQUEST_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                call();
+            }
+        }
+    }
+
     class CancelRequest extends AsyncTask<String, Void, Void> {
         String baseUrl = "http://www.mrpuncture.com/app/";
         String webPage = "";
@@ -137,6 +148,9 @@ public class OnGoingOrderActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+
+            new Notify().execute(shopid, ShopActivity.SHOPS, "Request Cancelled", "User cancelled request");
+
             Toast.makeText(OnGoingOrderActivity.this, "Order Cancelled", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(OnGoingOrderActivity.this, HomeActivity.class));
             finish();
@@ -154,13 +168,40 @@ public class OnGoingOrderActivity extends AppCompatActivity {
             startActivity(intent);
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[]
-            grantResults) {
-        if (requestCode == CALL_REQUEST_CODE) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                call();
+    class Notify extends AsyncTask<String, Void, Void> {
+        String baseUrl = "http://www.mrpuncture.com/app/";
+        String webPage = "";
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            URL url;
+            HttpURLConnection urlConnection = null;
+            try {
+                String myURL = baseUrl + "sendnotification.php?i=" + strings[0] + "&t=" + strings[1]
+                        + "&title=" + strings[2] + "&body=" + strings[3];
+                myURL = myURL.replaceAll(" ", "%20");
+                myURL = myURL.replaceAll("\'", "%27");
+                myURL = myURL.replaceAll("\'", "%22");
+                myURL = myURL.replaceAll("\\(", "%28");
+                myURL = myURL.replaceAll("\\)", "%29");
+                myURL = myURL.replaceAll("\\{", "%7B");
+                myURL = myURL.replaceAll("\\}", "%7B");
+                myURL = myURL.replaceAll("\\]", "%22");
+                myURL = myURL.replaceAll("\\[", "%22");
+                url = new URL(myURL);
+                urlConnection = (HttpURLConnection) url.openConnection();
+                BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection
+                        .getInputStream()));
+                String data;
+                while ((data = br.readLine()) != null)
+                    webPage = webPage + data;
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null)
+                    urlConnection.disconnect();
             }
+            return null;
         }
     }
 }
