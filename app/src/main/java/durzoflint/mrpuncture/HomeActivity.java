@@ -242,6 +242,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         int id = item.getItemId();
         switch (id) {
             case R.id.logout:
+                SharedPreferences sharedPreferences = getSharedPreferences(LOGIN_PREFS, Context
+                        .MODE_PRIVATE);
+                sharedPreferences.edit().putString(LoginActivity.USER_ID, "").apply();
                 startActivity(new Intent(this, LoginActivity.class));
                 finish();
                 break;
