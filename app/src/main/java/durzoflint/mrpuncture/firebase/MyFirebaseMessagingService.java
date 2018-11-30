@@ -16,6 +16,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import durzoflint.mrpuncture.R;
+
 import static durzoflint.mrpuncture.LoginActivity.LOGIN_PREFS;
 import static durzoflint.mrpuncture.LoginActivity.USER_ID;
 
@@ -75,7 +77,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                    .setSmallIcon(android.R.drawable.ic_notification_clear_all)
+                    .setSmallIcon(android.R.drawable.radiobutton_on_background)
+                    .setColor(getResources().getColor(R.color.colorSecondary))
                     .setContentTitle(remoteMessage.getNotification().getTitle())
                     .setContentText(remoteMessage.getNotification().getBody())
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT);

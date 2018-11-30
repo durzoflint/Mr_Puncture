@@ -26,6 +26,9 @@ public class OnGoingOrderActivity extends AppCompatActivity {
     String phone;
     String orderid;
     String shopid;
+    String userid;
+
+    Check check;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,13 +38,20 @@ public class OnGoingOrderActivity extends AppCompatActivity {
         Intent intent = getIntent();
         orderid = intent.getStringExtra(HomeActivity.ORDER_ID);
         String status = intent.getStringExtra(HomeActivity.STATUS);
-        String userid = intent.getStringExtra(HomeActivity.USER_ID);
+        userid = intent.getStringExtra(HomeActivity.USER_ID);
         shopid = intent.getStringExtra(HomeActivity.SHOP_ID);
         String name = intent.getStringExtra(HomeActivity.NAME);
         phone = intent.getStringExtra(HomeActivity.PHONE);
         String email = intent.getStringExtra(HomeActivity.EMAIL);
         String badge = intent.getStringExtra(HomeActivity.BADGE);
 
+        updateUI(badge, status, name);
+
+        check = new Check();
+        check.execute();
+    }
+
+    private void updateUI(String badge, String status, String name) {
         ImageView badgeIV = findViewById(R.id.badge);
         TextView messageTV = findViewById(R.id.message);
         TextView phoneTV = findViewById(R.id.phone);
@@ -73,12 +83,30 @@ public class OnGoingOrderActivity extends AppCompatActivity {
                 break;
             case "completed":
                 message = "Your request has been completed by " + name;
+                check.cancel(true);
+                Intent intent = getBaseContext().getPackageManager().getLaunchIntentForPackage
+                        (getBaseContext().getPackageName());
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
                 break;
             case "cancelled_by_shop":
                 message = "Your requested has been called by " + name;
+                check.cancel(true);
+                Intent intent2 = getBaseContext().getPackageManager().getLaunchIntentForPackage
+                        (getBaseContext().getPackageName());
+                intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent2);
+                finish();
                 break;
             case "cancelled_by_user":
                 message = "Your request has been cancelled by you";
+                check.cancel(true);
+                Intent intent3 = getBaseContext().getPackageManager().getLaunchIntentForPackage
+                        (getBaseContext().getPackageName());
+                intent3.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent3);
+                finish();
                 break;
         }
 
@@ -98,6 +126,12 @@ public class OnGoingOrderActivity extends AppCompatActivity {
                 new CancelRequest().execute("cancelled_by_user");
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        check.cancel(true);
     }
 
     @Override
@@ -202,6 +236,71 @@ public class OnGoingOrderActivity extends AppCompatActivity {
                     urlConnection.disconnect();
             }
             return null;
+        }
+    }
+
+    class Check extends AsyncTask<Void, Void, Void> {
+        String baseUrl = "http://www.mrpuncture.com/app/";
+        String webPage = "";
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            URL url;
+            HttpURLConnection urlConnection = null;
+            try {
+                String myURL = baseUrl + "updateorder.php?i=" + orderid;
+                myURL = myURL.replaceAll(" ", "%20");
+                myURL = myURL.replaceAll("\'", "%27");
+                myURL = myURL.replaceAll("\'", "%22");
+                myURL = myURL.replaceAll("\\(", "%28");
+                myURL = myURL.replaceAll("\\)", "%29");
+                myURL = myURL.replaceAll("\\{", "%7B");
+                myURL = myURL.replaceAll("\\}", "%7B");
+                myURL = myURL.replaceAll("\\]", "%22");
+                myURL = myURL.replaceAll("\\[", "%22");
+                url = new URL(myURL);
+                urlConnection = (HttpURLConnection) url.openConnection();
+                BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection
+                        .getInputStream()));
+                String data;
+                while ((data = br.readLine()) != null)
+                    webPage = webPage + data;
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null)
+                    urlConnection.disconnect();
+            }
+
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            if (!webPage.trim().isEmpty()) {
+                String response[] = webPage.split("<br>");
+                for (int i = 0, k = 0; k < response.length / 7; i += 7, k++) {
+                    orderid = response[i];
+                    String status = response[i + 1];
+                    shopid = response[i + 2];
+                    String name = response[i + 3];
+                    phone = response[i + 4];
+                    String email = response[i + 5];
+                    String badge = response[i + 6];
+
+                    updateUI(badge, status, name);
+                }
+            }
+
+            check = new Check();
+            check.execute();
         }
     }
 }
