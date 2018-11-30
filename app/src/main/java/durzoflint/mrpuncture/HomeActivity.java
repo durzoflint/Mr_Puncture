@@ -34,17 +34,23 @@ import java.net.URL;
 import durzoflint.mrpuncture.firebase.MyFirebaseMessagingService;
 
 import static durzoflint.mrpuncture.LoginActivity.LOGIN_PREFS;
-import static durzoflint.mrpuncture.LoginActivity.USER_ID;
 import static durzoflint.mrpuncture.firebase.MyFirebaseMessagingService.TOKEN;
 
 public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback {
     public static final String LONGI = "longi";
     public static final String LATI = "lati";
+    public static final String USER_ID = "user_id";
+    public static final String SHOP_ID = "shop_id";
+    public static final String NAME = "name";
+    public static final String PHONE = "phone";
+    public static final String EMAIL = "email";
+    public static final String BADGE = "badge";
     int REQUEST_LOCATION = 1;
     LatLng target;
     private GoogleMap mMap;
     private FusedLocationProviderClient fusedLocationProviderClient;
     private View mapView;
+    private String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +58,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.activity_home);
 
         SharedPreferences sharedPreferences = getSharedPreferences(LOGIN_PREFS, Context.MODE_PRIVATE);
-        String id = sharedPreferences.getString(USER_ID, "");
+        id = sharedPreferences.getString(LoginActivity.USER_ID, "");
         if (id.isEmpty()) {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
@@ -65,7 +71,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         }
 
-        //Todo: Check for existing orders(on server). If yes, then retain them.
+        new CheckOrder().execute();
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -85,6 +91,66 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 startActivity(intent);
             }
         });
+    }
+
+    class CheckOrder extends AsyncTask<Void, Void, Void> {
+        String baseUrl = "http://www.mrpuncture.com/app/";
+        String webPage = "";
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            URL url;
+            HttpURLConnection urlConnection = null;
+            try {
+                String myURL = baseUrl + "checkorder.php?i=" + id;
+                myURL = myURL.replaceAll(" ", "%20");
+                myURL = myURL.replaceAll("\'", "%27");
+                myURL = myURL.replaceAll("\'", "%22");
+                myURL = myURL.replaceAll("\\(", "%28");
+                myURL = myURL.replaceAll("\\)", "%29");
+                myURL = myURL.replaceAll("\\{", "%7B");
+                myURL = myURL.replaceAll("\\}", "%7B");
+                myURL = myURL.replaceAll("\\]", "%22");
+                myURL = myURL.replaceAll("\\[", "%22");
+                url = new URL(myURL);
+                urlConnection = (HttpURLConnection) url.openConnection();
+                BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection
+                        .getInputStream()));
+                String data;
+                while ((data = br.readLine()) != null)
+                    webPage = webPage + data;
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null)
+                    urlConnection.disconnect();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            if (!webPage.trim().isEmpty()) {
+
+                Intent intent = new Intent(HomeActivity.this, OnGoingOrderActivity.class);
+                intent.putExtra(USER_ID, id);
+
+                String response[] = webPage.split("<br>");
+
+                for (int i = 0, k = 0; k < response.length / 5; i += 5, k++) {
+                    intent.putExtra(SHOP_ID, response[i]);
+                    intent.putExtra(NAME, response[i + 1]);
+                    intent.putExtra(PHONE, response[i + 2]);
+                    intent.putExtra(EMAIL, response[i + 3]);
+                    intent.putExtra(BADGE, response[i + 4]);
+                }
+
+                startActivity(intent);
+
+                finish();
+            }
+        }
     }
 
     class SendTokenToServer extends AsyncTask<String, Void, Void> {
