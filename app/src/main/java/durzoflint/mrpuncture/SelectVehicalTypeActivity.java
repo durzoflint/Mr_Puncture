@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
+import android.widget.LinearLayout;
 
 import static durzoflint.mrpuncture.HomeActivity.LATI;
 import static durzoflint.mrpuncture.HomeActivity.LONGI;
@@ -23,13 +23,15 @@ public class SelectVehicalTypeActivity extends AppCompatActivity implements View
         lati = intent.getStringExtra(LATI);
         longi = intent.getStringExtra(LONGI);
 
-        Button four = findViewById(R.id.four);
-        Button three = findViewById(R.id.three);
-        Button two = findViewById(R.id.two);
+        LinearLayout bike = findViewById(R.id.bike);
+        LinearLayout car = findViewById(R.id.car);
+        LinearLayout van = findViewById(R.id.van);
+        LinearLayout auto = findViewById(R.id.auto);
 
-        four.setOnClickListener(this);
-        three.setOnClickListener(this);
-        two.setOnClickListener(this);
+        bike.setOnClickListener(this);
+        car.setOnClickListener(this);
+        van.setOnClickListener(this);
+        auto.setOnClickListener(this);
     }
 
     @Override
@@ -41,15 +43,19 @@ public class SelectVehicalTypeActivity extends AppCompatActivity implements View
         intent.putExtra(LONGI, longi);
 
         switch (id) {
-            case R.id.four:
+            case R.id.van:
                 intent.putExtra(VEHICAL_TYPE, 4);
                 startActivity(intent);
                 break;
-            case R.id.three:
+            case R.id.car:
+                intent.putExtra(VEHICAL_TYPE, 4);
+                startActivity(intent);
+                break;
+            case R.id.auto:
                 intent.putExtra(VEHICAL_TYPE, 3);
                 startActivity(intent);
                 break;
-            case R.id.two:
+            case R.id.bike:
                 intent.putExtra(VEHICAL_TYPE, 2);
                 startActivity(intent);
                 break;
