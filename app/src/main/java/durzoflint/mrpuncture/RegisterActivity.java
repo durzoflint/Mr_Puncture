@@ -16,25 +16,46 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class RegisterActivity extends AppCompatActivity {
+    EditText name, email, phone, password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        name = findViewById(R.id.name);
+        email = findViewById(R.id.email);
+        phone = findViewById(R.id.phone);
+        password = findViewById(R.id.password);
+
         Button submit = findViewById(R.id.submit);
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText name = findViewById(R.id.name);
-                EditText email = findViewById(R.id.email);
-                EditText phone = findViewById(R.id.phone);
-                EditText password = findViewById(R.id.password);
 
-                new Register().execute(name.getText().toString(), email.getText().toString(),
-                        phone.getText().toString(), password.getText().toString());
+                if (validate()) {
+                    new Register().execute(name.getText().toString(), email.getText().toString(),
+                            phone.getText().toString(), password.getText().toString());
+                }
             }
         });
+    }
+
+    private boolean validate() {
+        if (name.getText().toString().trim().isEmpty()) {
+            Toast.makeText(this, "The name cannot empty", Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (email.getText().toString().trim().isEmpty()) {
+            Toast.makeText(this, "The Email cannot be empty", Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (phone.getText().toString().trim().isEmpty()) {
+            Toast.makeText(this, "The Phone cannot be empty", Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (password.getText().toString().trim().isEmpty()) {
+            Toast.makeText(this, "The password cannot be empty", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
 
     class Register extends AsyncTask<String, Void, Void> {
