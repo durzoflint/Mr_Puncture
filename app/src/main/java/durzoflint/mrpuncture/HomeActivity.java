@@ -43,10 +43,10 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     public static final String SHOP_ID = "shop_id";
     public static final String NAME = "name";
     public static final String PHONE = "phone";
-    public static final String EMAIL = "email";
     public static final String BADGE = "badge";
     public static final String STATUS = "status";
     public static final String ORDER_ID = "order_id";
+    public static final String ADDRESS = "address";
     int REQUEST_LOCATION = 1;
     LatLng target;
     private GoogleMap mMap;
@@ -146,7 +146,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                     intent.putExtra(SHOP_ID, response[i + 2]);
                     intent.putExtra(NAME, response[i + 3]);
                     intent.putExtra(PHONE, response[i + 4]);
-                    intent.putExtra(EMAIL, response[i + 5]);
+                    intent.putExtra(ADDRESS, response[i + 5]);
                     intent.putExtra(BADGE, response[i + 6]);
                 }
 

@@ -27,7 +27,7 @@ public class OnGoingOrderActivity extends AppCompatActivity {
     String orderid;
     String shopid;
     String userid;
-
+    String address;
     Check check;
 
     @Override
@@ -42,7 +42,7 @@ public class OnGoingOrderActivity extends AppCompatActivity {
         shopid = intent.getStringExtra(HomeActivity.SHOP_ID);
         String name = intent.getStringExtra(HomeActivity.NAME);
         phone = intent.getStringExtra(HomeActivity.PHONE);
-        String email = intent.getStringExtra(HomeActivity.EMAIL);
+        address = intent.getStringExtra(HomeActivity.ADDRESS);
         String badge = intent.getStringExtra(HomeActivity.BADGE);
 
         updateUI(badge, status, name);
@@ -55,6 +55,7 @@ public class OnGoingOrderActivity extends AppCompatActivity {
         ImageView badgeIV = findViewById(R.id.badge);
         TextView messageTV = findViewById(R.id.message);
         TextView phoneTV = findViewById(R.id.phone);
+        TextView addressTV = findViewById(R.id.address);
         final LinearLayout call = findViewById(R.id.call);
         Button cancel = findViewById(R.id.cancel);
 
@@ -112,6 +113,7 @@ public class OnGoingOrderActivity extends AppCompatActivity {
 
         messageTV.setText(message);
         phoneTV.setText(phone);
+        addressTV.setText("Address: " + address);
 
         call.setOnClickListener(new View.OnClickListener() {
             @Override
